@@ -29,6 +29,6 @@ def get_question(question_id):
     return jsonify(question)
 
 @questions_blp.route('/count', methods=['GET'])
-def question_count()
+def question_count():
     total = Question.query.count()
     return jsonify({"total": total})
