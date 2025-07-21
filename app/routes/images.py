@@ -56,7 +56,7 @@ def list_images():
         results.append({
             'id': img.id,
             'url': img.url,
-            'type': img.type
+            'type': img.type.value if hasattr(img.type, "value") else img.type
         })
     return jsonify({'images': results})
 
