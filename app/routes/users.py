@@ -4,7 +4,7 @@ from sqlalchemy.exc import IntegrityError
 from app.models import User
 from config import db
 
-user_blp = Blueprint("users", __name__, url_prefix="/users")
+user_blp = Blueprint("users", __name__)
 
 
 @user_blp.route("/", methods=["GET"])
@@ -13,7 +13,7 @@ def connect():
         return jsonify({"message": "Success Connect"})
 
 
-@user_blp.route("/signup", methods=["POST"])
+@user_blp.route("/users/signup", methods=["POST"])
 def signup_page():
     if not request.is_json:
         return jsonify({"message": "요청은 JSON 형식이어야 합니다."}), 400
