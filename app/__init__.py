@@ -25,7 +25,7 @@ def create_app():
         return response
 
 		# app/route/__init__.py에 블루 브린트를 등록해주세요
-	  register_routes(application)
+    register_routes(application)
 
 
     return application
