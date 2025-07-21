@@ -4,7 +4,7 @@ import os
 from app.models import Image  # SQLAlchemy 모델
 from config import db        # DB 세션
 
-images_bp = Blueprint('images', __name__, url_prefix='/images')
+images_blp = Blueprint('images', __name__, url_prefix='/images')
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
@@ -12,7 +12,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@images_bp.route('/upload', methods=['POST'])
+@images_blp.route('/upload', methods=['POST'])
 def upload_image():
     if 'file' not in request.files:
         return jsonify({'error': 'No file part in the request'}), 400
@@ -48,7 +48,7 @@ def upload_image():
         return jsonify({'error': 'File type not allowed'}), 400
 
 
-@images_bp.route('/', methods=['GET'])
+@images_blp.route('/', methods=['GET'])
 def list_images():
     images = Image.query.all()
     results = []
@@ -61,7 +61,7 @@ def list_images():
     return jsonify({'images': results})
 
 
-@images_bp.route('/<int:image_id>', methods=['DELETE'])
+@images_blp.route('/<int:image_id>', methods=['DELETE'])
 def delete_image(image_id):
     image = Image.query.get(image_id)
     if not image:
@@ -82,7 +82,7 @@ def delete_image(image_id):
     return jsonify({'message': f'Image id {image_id} and file deleted successfully'})
 
 
-@images_bp.route('/type/<image_type>', methods=['GET'])
+@images_blp.route('/type/<image_type>', methods=['GET'])
 def get_images_by_type(image_type):
     images = Image.query.filter_by(type=image_type).all()
     results = [{'id': img.id, 'url': img.url} for img in images]
@@ -93,7 +93,7 @@ def get_images_by_type(image_type):
 # 설문조사 이미지 + 이름 데이터 API (미리 하드코딩된 데이터 반환)
 # ———————————————————————
 
-@images_bp.route('/survey-data', methods=['GET'])
+@images_blp.route('/survey-data', methods=['GET'])
 def survey_data():
     # 1번 문항 : 치킨 브랜드
     brands = [
