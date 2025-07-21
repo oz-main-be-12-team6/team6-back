@@ -1,5 +1,6 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from app.models import Question, Choices
+from config import db
 
 questions_blp = Blueprint('questions', __name__, url_prefix='/questions')
 
@@ -25,3 +26,17 @@ def get_question(question_id):
 def question_count():
     total = Question.query.filter_by(is_active=True).count()
     return jsonify({"total": total})
+
+
+@questions_blp.route('', methods=['POST'])
+def create_question():
+    data = request.get_json()
+    question = Question(
+        title=data['title'],
+        sqe=data['sqe'],
+        image_id=data['image_id'],
+        is_active=True
+    )
+    db.session.add(question)
+    db.session.commit()
+    return jsonify({"id": question.id}), 201
