@@ -20,7 +20,7 @@ def submit_answer():
     """
     data = request.get_json()
     try:
-        answers = [Answer(user_id=i["user_id"], choice_id=i["choice_id"]) for i in data]
+        answers = [Answer(user_id=int(i["user_id"]), choice_id=int(i["choice_id"])) for i in data]
         db.session.add_all(answers)
         db.session.commit()
         return jsonify({"message": f"User: {data[0]['user_id']}'s answers Success Create"}), 201
