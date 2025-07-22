@@ -61,6 +61,34 @@ def list_answers():
     ]
     return jsonify(result), 200
 
+@answers_blp.route('/submit', methods=['POST'])
+def submit_answers():
+    data = request.get_json(force=True)
+
+    if not isinstance(data, list):
+        return error_response('리스트 형식의 데이터를 보내주세요.', 400)
+
+    try:
+        user_id = None
+        for item in data:
+            if not isinstance(item, dict) or 'user_id' not in item or 'choice_id' not in item:
+                return error_response('모든 항목에 user_id와 choice_id가 포함되어야 합니다.', 400)
+
+            if user_id is None:
+                user_id = item['user_id']
+            elif user_id != item['user_id']:
+                return error_response('모든 항목의 user_id는 동일해야 합니다.', 400)
+
+            answer = Answer(user_id=item['user_id'], choice_id=item['choice_id'])
+            db.session.add(answer)
+
+        db.session.commit()
+        return jsonify({"message": f"User: {user_id}'s answers Success Create"}), 201
+
+    except Exception as e:
+        db.session.rollback()
+        return error_response(str(e), 500)
+
 
 @answers_blp.route('/user/<int:user_id>', methods=['GET'])
 def list_by_user(user_id: int):
