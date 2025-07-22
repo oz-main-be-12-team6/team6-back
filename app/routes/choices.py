@@ -23,7 +23,7 @@ def create_choice():
     )
     db.session.add(choice)
     db.session.commit()
-    return jsonify({"id": choice.id}), 201
+    return jsonify({"message": f"Content: {choice.content} choice Success Create"}), 201
 
 
 @choices_blp.route('/choice', methods=['POST'])
