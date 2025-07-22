@@ -44,3 +44,7 @@ def create_choice_alias():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+
+@choices_blp.route('/choice', methods=['POST'])
+def create_choice_alias():
+    return create_choice()  # 기존 create_choice 함수 호출
