@@ -1,8 +1,8 @@
+
 # app/routes/answers.py
 
 from flask import request, Blueprint, jsonify
 from sqlalchemy.exc import IntegrityError
-
 from app.models import Answer
 from config import db
 
@@ -46,8 +46,8 @@ def submit_answer():
                 user_id = uid
             elif user_id != uid:
                 return jsonify({"message": "All items must have the same user_id"}), 400
-
-            db.session.add(Answer(user_id=uid, choice_id=cid))
+            answer = Answer(user_id=item['user_id'], choice_id=item['choice_id'])
+            db.session.add(answer)
 
         db.session.commit()
         return jsonify({"message": f"User: {user_id}'s answers Success Create"}), 201
