@@ -25,22 +25,22 @@ def create_choice():
     db.session.commit()
     return jsonify({"message": f"Content: {choice.content} choice Success Create"}), 201
 
-@choices_blp.route('/choice', methods=['POST'])
-def create_choice_alias():
-    data = request.get_json(force=True)
+# @choices_blp.route('/choice', methods=['POST'])
+# def create_choice_alias():
+#     data = request.get_json(force=True)
 
-    try:
-        choice = Choices(
-            content=data['content'],
-            sqe=data['sqe'],
-            question_id=data['question_id'],
-            is_active=data.get('is_active', True)
-        )
-        db.session.add(choice)
-        db.session.commit()
+#     try:
+#         choice = Choices(
+#             content=data['content'],
+#             sqe=data['sqe'],
+#             question_id=data['question_id'],
+#             is_active=data.get('is_active', True)
+#         )
+#         db.session.add(choice)
+#         db.session.commit()
 
-        return jsonify({"message": f"Content: {choice.content} choice Success Create"}), 201
+#         return jsonify({"message": f"Content: {choice.content} choice Success Create"}), 201
 
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({"error": str(e)}), 500
+#     except Exception as e:
+#         db.session.rollback()
+#         return jsonify({"error": str(e)}), 500
