@@ -19,32 +19,16 @@ def create_choice():
         content=data['content'],
         sqe=data['sqe'],
         question_id=data['question_id'],
-        is_active=True
+        is_active=data.get('is_active', True)
     )
     db.session.add(choice)
     db.session.commit()
     return jsonify({"id": choice.id}), 201
 
-@choices_blp.route('/choice', methods=['POST'])
-def create_choice_alias():
-    data = request.get_json(force=True)
-
-    try:
-        choice = Choices(
-            content=data['content'],
-            sqe=data['sqe'],
-            question_id=data['question_id'],
-            is_active=data.get('is_active', True)
-        )
-        db.session.add(choice)
-        db.session.commit()
-
-        return jsonify({"message": f"Content: {choice.content} choice Success Create"}), 201
-
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({"error": str(e)}), 500
 
 @choices_blp.route('/choice', methods=['POST'])
-def create_choice_alias():
-    return create_choice()  # 기존 create_choice 함수 호출
+def create_choice_alias_for_guideline():
+    """
+    POST /choice - 가이드라인에 맞춘 alias
+    """
+    return create_choice()
