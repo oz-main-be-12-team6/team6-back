@@ -4,7 +4,7 @@ import os
 from app.models import Image  # SQLAlchemy 모델
 from config import db        # DB 세션
 
-images_blp = Blueprint('image', __name__, url_prefix='/image')
+images_blp = Blueprint('images', __name__, url_prefix='/images')
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
