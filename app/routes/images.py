@@ -111,6 +111,21 @@ def create_image_direct():
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
 
+@images_blp.route('/main', methods=['GET'])
+def get_main_image():
+    image = Image.query.filter_by(type='main').order_by(Image.id.desc()).first()
+    if not image:
+        return jsonify({"image": None}), 404
+
+    return jsonify({"image": image.url}), 200
+
+@images_blp.route('/image', methods=['POST'])
+def create_image_alias():
+    """
+    명세에 맞춰 POST /image 경로에서도 이미지 생성되도록 alias 제공
+    """
+    return create_image_direct()
+
 # ———————————————————————
 # 설문조사 이미지 + 이름 데이터 API (미리 하드코딩된 데이터 반환)
 # ———————————————————————

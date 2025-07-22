@@ -60,3 +60,22 @@ def create_question_alias():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+    
+@questions_blp.route('/sqe/<int:sqe>', methods=['GET'])
+def get_question_by_sqe(sqe):
+    """
+    sqe(질문 순서) 기준으로 질문 및 선택지 반환
+    """
+    question = Question.query.filter_by(sqe=sqe, is_active=True).first()
+
+    if not question:
+        return jsonify({"error": "존재하지 않는 질문입니다."}), 404
+
+    choices = Choices.query.filter_by(question_id=question.id, is_active=True).order_by(Choices.sqe).all()
+
+    return jsonify({
+        "id": question.id,
+        "title": question.title,
+        "image": question.image.to_dict() if question.image else None,
+        "choices": [c.to_dict() for c in choices]
+    }), 200
