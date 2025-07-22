@@ -88,6 +88,28 @@ def get_images_by_type(image_type):
     results = [{'id': img.id, 'url': img.url} for img in images]
     return jsonify({'images': results})
 
+@images_blp.route('', methods=['POST'])
+def create_image_direct():
+    data = request.get_json(force=True)
+
+    url = data.get('url')
+    image_type = data.get('type')
+
+    if not url or not image_type:
+        return jsonify({'error': 'url과 type은 필수입니다.'}), 400
+
+    try:
+        image = Image(url=url, type=image_type)
+        db.session.add(image)
+        db.session.commit()
+
+        return jsonify({
+            'message': f"ID: {image.id} Image Success Create"
+        }), 201
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
 
 # ———————————————————————
 # 설문조사 이미지 + 이름 데이터 API (미리 하드코딩된 데이터 반환)

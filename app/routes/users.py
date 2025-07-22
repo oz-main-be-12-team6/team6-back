@@ -13,7 +13,7 @@ def connect():
         return jsonify({"message": "Success Connect"})
 
 
-@user_blp.route("/users/signup", methods=["POST"])
+@user_blp.route("/signup", methods=["POST"])
 def signup_page():
     if not request.is_json:
         return jsonify({"message": "요청은 JSON 형식이어야 합니다."}), 400

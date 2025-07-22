@@ -40,3 +40,23 @@ def create_question():
     db.session.add(question)
     db.session.commit()
     return jsonify({"id": question.id}), 201
+
+@questions_blp.route('/question', methods=['POST'])
+def create_question_alias():
+    data = request.get_json(force=True)
+
+    try:
+        question = Question(
+            title=data['title'],
+            sqe=data['sqe'],
+            image_id=data['image_id'],
+            is_active=data.get('is_active', True)
+        )
+        db.session.add(question)
+        db.session.commit()
+
+        return jsonify({"message": f"Title: {question.title} question Success Create"}), 201
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
