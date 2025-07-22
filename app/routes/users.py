@@ -50,4 +50,4 @@ def signup_page():
 
     except IntegrityError:
         db.session.rollback()
-        return jsonify({"message": "이미 존재하는 이메일 입니다."}), 400
+        return jsonify({"message": "이미 존재하는 계정 입니다."}), 400
