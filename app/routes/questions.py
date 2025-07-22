@@ -61,7 +61,7 @@ def create_question_alias():
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
     
-@questions_blp.route('/sqe/<int:sqe>', methods=['GET'])
+@questions_blp.route('/<int:sqe>', methods=['GET'])
 def get_question_by_sqe(sqe):
     """
     sqe(질문 순서) 기준으로 질문 및 선택지 반환
